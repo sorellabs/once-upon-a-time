@@ -1,0 +1,26 @@
+{
+  "name": "once-upon-a-time",
+  "version": "0.1.0",
+  "description": "An algebraic prelude for LiveScript (and JavaScript). Compatible with fantasy-land.",
+  "main": "index.js",
+  "scripts": {
+    "test": "node test/node.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git://github.com/killdream/once-upon-a-time.git"
+  },
+  "keywords": [
+    "prelude",
+    "standard",
+    "library",
+    "monadic",
+    "fantasy-land",
+    "functional"
+  ],
+  "author": "Quildreen Motta",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/killdream/once-upon-a-time/issues"
+  }
+}
