@@ -29,7 +29,7 @@
 { isArray }              = Array
 
 
-# -- Public interface --------------------------------------------------
+# -- Public API --------------------------------------------------------
 
 # :: (Object*, [Object]) → Object
 export destructive-merge = (target, sources) -->
