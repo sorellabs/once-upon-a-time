@@ -4,7 +4,7 @@ Once upon a time...
 ===================
 
 [![Build Status](https://secure.travis-ci.org/killdream/once-upon-a-time.png?branch=master)](https://travis-ci.org/killdream/once-upon-a-time)
-[![NPM version](https://badge.fury.io/js/alright.png)](http://badge.fury.io/js/alright)
+[![NPM version](https://badge.fury.io/js/once-upon-a-time.png)](http://badge.fury.io/js/once-upon-a-time)
 [![Dependencies Status](https://david-dm.org/killdream/once-upon-a-time.png)](https://david-dm.org/killdream/once-upon-a-time)
 [![experimental](http://hughsk.github.io/stability-badges/dist/experimental.svg)](http://github.com/hughsk/stability-badges)
 
