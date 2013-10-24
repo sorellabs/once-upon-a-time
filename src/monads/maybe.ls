@@ -33,7 +33,7 @@ abstractMaybe = {
   isNothing : false
   isJust    : false
   Nothing: -> @nothing
-  Just:    -> @of v
+  Just:    (v) -> @of v
 }
 
 module.exports = Maybe = derive abstractMaybe, do
