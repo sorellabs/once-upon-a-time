@@ -4,7 +4,7 @@
   "description": "An algebraic prelude for LiveScript (and JavaScript). Compatible with fantasy-land.",
   "main": "index.js",
   "scripts": {
-    "test": "node test/node.js"
+    "test": "$(npm bin)/lsc test/node"
   },
   "repository": {
     "type": "git",

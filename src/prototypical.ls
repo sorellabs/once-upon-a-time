@@ -34,11 +34,12 @@
 # :: (Object*, [Object]) → Object
 export destructive-merge = (target, sources) -->
   for source in sources => target <<< source
+  return target
 
 # :: [Object] → Object
 export merge = (objects) ->
   destructive-merge {}, objects
 
-# :: (a:Object, [Object]) → Object <: a
-export derive = (prototype, mixins) -->
-  fast-extend (inherit proto), mixins
+# :: (a:Object, Object...) → Object <: a
+export derive = (prototype, ...mixins) ->
+  destructive-merge (inherit prototype), mixins

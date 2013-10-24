@@ -36,9 +36,9 @@ abstractMaybe = {
   Just:    -> @of v
 }
 
-export Maybe = derive abstractMaybe {
+module.exports = Maybe = derive abstractMaybe, do
   # :: a → Maybe a
-  of: (v) -> @derive value: v
+  of: (v) -> derive this, value: v
 
   # :: @Maybe a => (a → b) → Maybe b
   map: (f) -> @of (f @value)
@@ -51,12 +51,12 @@ export Maybe = derive abstractMaybe {
 
   # :: @Maybe a => (() → b) → b
   or-else: (f) -> this
-}
 
-Maybe.nothing = derive Maybe {
+
+Maybe.nothing = derive Maybe, do
   of      : -> @nothing
   map     : (f) -> this
   chain   : (f) -> this
   ap      : (b) -> b
   or-else : (f) -> f!
-}
+
