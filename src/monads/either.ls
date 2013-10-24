@@ -1,6 +1,6 @@
-# # Module monads/maybe
+# # Module monads/either
 #
-# The Maybe monad.
+# The Either monad.
 #
 #
 # Copyright (c) 2013 Quildreen "Sorella" Motta <quildreen@gmail.com>
@@ -29,35 +29,47 @@
 
 
 # -- Implementation ----------------------------------------------------
-abstractMaybe = {
-  isNothing : false
-  isJust    : false
-  Nothing: -> Nothing
-  Just:    (v) -> @of v
+abstract-either = {
+  isLeft: false
+  isRight: false
+  Left:  (v) -> derive Left, value: v
+  Right: (v) -> @of v
 }
 
-module.exports = Maybe = derive abstractMaybe, do
-  # :: a → Maybe a
-  of: (v) -> derive Maybe, value: v, isJust: true
+module.exports = Either = derive abstract-either, do
+  # :: b → Either a b
+  of: (v) -> derive Either, { value: v, isRight: true }
 
-  # :: @Maybe a => (a → b) → Maybe b
-  map: (f) -> @of (f @value)
+  # :: @Either a b => (a → c) → (b → d) → c | d
+  fold: (f, g) -->
+    | @isLeft  => f @value
+    | @isRight => g @value
 
-  # :: @Maybe a => (a → Maybe b) → Maybe b
-  chain: (f) -> f @value
+  # :: @Either a b => (b → Either a c) → Either a c
+  chain: (f) -> @fold do
+                      * (l) ~> @Left l
+                      * (r) -> f r
 
-  # :: @Maybe (a → b) => F a → F b
-  ap: (b) -> b.map @value
+  # :: @Either a b => () → Either b a
+  swap: -> @fold do
+                 * (l) ~> @Right l
+                 * (r) ~> @Left r
 
-  # :: @Maybe a => (() → b) → b
-  or-else: (f) -> this
+  # :: @Either a b => (b → c) → Either a c
+  map: (f) -> @chain (v) ~> @of (f v)
 
+  # :: @Either a b => (a → c) → (b → d) → Either (a|c) (b|d)
+  bimap: (f, g) -> @fold do
+                         * (l) ~> @Left (f l)
+                         * (r) ~> @Right (g r)
 
-Nothing = derive Maybe, do
-  isNothing : true
-  of        : -> Nothing
-  map       : (f) -> this
-  chain     : (f) -> this
-  ap        : (b) -> b
-  or-else   : (f) -> f!
+  # :: @Either a (b → c) => F b → F c
+  ap: (b) -> @chain (f) -> b.map f
 
+  # :: @Either a b => (a → c) → c
+  or-else: (f) -> @fold do
+                        * (l) -> f l
+                        * (r) ~> @Right r
+  
+Left = derive Either, do
+  isLeft: true
