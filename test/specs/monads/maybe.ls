@@ -1,9 +1,6 @@
 spec = (require 'hifive')!
-{ok, deepEqual} = require 'assert'
+{id, ok, eq} = require '../../utils'
 Maybe = require '../../../src/monads/maybe'
-
-id = (a) -> a
-eq = (a, b) --> a `deepEqual` b
 
 module.exports = spec 'Maybe a' (_, spec) ->
 
