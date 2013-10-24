@@ -32,7 +32,7 @@
 abstractMaybe = {
   isNothing : false
   isJust    : false
-  Nothing: -> @nothing
+  Nothing: -> Nothing
   Just:    (v) -> @of v
 }
 
@@ -53,8 +53,8 @@ module.exports = Maybe = derive abstractMaybe, do
   or-else: (f) -> this
 
 
-Maybe.nothing = derive Maybe, do
-  of      : -> @nothing
+Nothing = derive Maybe, do
+  of      : -> Nothing
   map     : (f) -> this
   chain   : (f) -> this
   ap      : (b) -> b
