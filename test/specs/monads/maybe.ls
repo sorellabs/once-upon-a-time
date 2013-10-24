@@ -4,7 +4,7 @@ Maybe = require '../../../src/monads/maybe'
 
 module.exports = spec 'Maybe a' (_, spec) ->
 
-  spec '{} Maybe' (o) ->
+  spec 'Just a' (o) ->
      Just = (v) -> Maybe.Just v
 
      o '.of(x) should return a monad with x as value.' ->
@@ -22,7 +22,7 @@ module.exports = spec 'Maybe a' (_, spec) ->
      o '.orElse(f) should ignore the operation.' ->
        (Just 1 .or-else (-> 2) .chain id) `eq` 1
 
-  spec '{} Nothing' (o) ->
+  spec 'Nothing' (o) ->
      Nothing = Maybe.Nothing!
      o '.of(x), .map(f), .chain(f) should return Nothing.' ->
        (Nothing.of 1) `eq` Nothing
