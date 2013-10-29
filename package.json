@@ -1,10 +1,11 @@
 {
   "name": "once-upon-a-time",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "description": "An algebraic prelude for LiveScript (and JavaScript). Compatible with fantasy-land.",
-  "main": "index.js",
+  "main": "lib/index.js",
   "scripts": {
-    "test": "$(npm bin)/lsc test/node"
+    "test": "make test",
+    "prepublish": "make compile"
   },
   "repository": {
     "type": "git",
