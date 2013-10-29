@@ -22,28 +22,44 @@ The easiest way is to grab it from NPM (if you're in the Browser, use [Browserif
 
     $ npm install once-upon-a-time
     
-If you don't want to use NPM and/or Browserify, you have two options (these
-will work with barebones JS — no modules, — AMD, or CommonJS modules):
+    
+### But I use AMD! (or CommonJS without NPM)
 
-  - [Download the latest release][download], which includes
-    `once-upon-a-time.umd.js`, and load the file in your platform.
-    
-  - Compile the library from source to get the most recent
-    `once-upon-a-time.umd.js`.
+If you use AMD, or some implementation of CommonJS that doesn't rely on NPM,
+you can [Download the latest release][download], which includes the
+`once-upon-a-time.umd.js` file, configure your tool appropriately to load the
+file, then:
 
-    You'll need [Git][], [Make][] and [Node.js][], and run the following
-    commands:
+```js
+require(["once-upon-a-time"], function(onceUponATime) {
+  ...
+})
+```
+
+
+### But I don't use modules!
+
+If you don't use modules, you can [Download the latest release][download],
+which includes the `once-upon-a-time.umd.js` file, and just load the file as
+you would any other library. `onceUponATime` will be a global that you can use:
+
+```html
+<script src="/path/to/once-upon-a-time.umd.js"></script>
+```
+
+### Compiling from source
     
-        $ git clone git://github.com/killdream/once-upon-a-time.git
-        $ cd once-upon-a-time
-        $ npm install
-        $ make bundle
+If you want to compile the library from the source, You'll need [Git][],
+[Make][] and [Node.js][], and run the following commands:
     
-Once you got `once-upon-a-time.umd.js` loaded in your platform, all of the
-functionality will be accessible from the `onceUponATime` global object if
-you're using no module system, or your local binding of the module object
-otherwise.
+    $ git clone git://github.com/killdream/once-upon-a-time.git
+    $ cd once-upon-a-time
+    $ npm install
+    $ make bundle
     
+This will generate the `dist/once-upon-a-time.umd.js` file, which you can
+include anywhere.
+
 [download]: http://github.com/killdream/once-upon-a-time
 [Browserify]: http://browserify.org/
 [Git]: http://git-scm.com/
