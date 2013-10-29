@@ -58,7 +58,8 @@ otherwise.
 
 ## Tests
 
-( ... )
+  $ npm install
+  $ make test
 
 
 ## Platform support
