@@ -1,6 +1,6 @@
-# # Module index
+# # Module functions
 #
-# The entry-point.
+# Common functions to operate over monads.
 #
 #
 # Copyright (c) 2013 Quildreen "Sorella" Motta <quildreen@gmail.com>
@@ -24,8 +24,15 @@
 # OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION
 # WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 
-# -- Exports -----------------------------------------------------------
-module.exports = {
-  prototypical: require './prototypical'
-  monads:       require './monads'
-} <<< (require './functions')
+# :: b → (a → b) → Maybe a → b
+export maybe = (b, f, m) -->
+  m.chain f .or-else -> b
+
+# :: (a → c) → (b → c) → Either a b → c
+export either = (f, g, m) -->
+  m.fold f, g
+
+# :: (a → b) → f a → f b
+export map = (f, x) -->
+  x.map f
+
