@@ -24,11 +24,9 @@
 # OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION
 # WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 
-# -- Dependencies ------------------------------------------------------
-{ merge } = require '../prototypical'
-
-
 # -- Exports -----------------------------------------------------------
-module.exports = merge do
-                       * require './maybe'
-                       * require './either'
+module.expots = do
+  Maybe:      require './maybe'
+  Either:     require './either'
+  Error:      require './error'
+  Validation: require './validation'

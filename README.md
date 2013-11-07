@@ -74,8 +74,8 @@ include anywhere.
 
 ## Tests
 
-  $ npm install
-  $ make test
+    $ npm install
+    $ make test
 
 
 ## Platform support
