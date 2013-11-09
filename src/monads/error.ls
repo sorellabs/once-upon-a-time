@@ -36,7 +36,8 @@ module.exports = Error = {
   of     : (v) -> derive Error, value: [v]
   chain  : (f) -> f @value
 
-  to-string: -> (@value.map render-error).reduce aggregate-error
+  to-string: -> "ErrorGroup(#{(@value.map (.to-string!)) .join ', '})"
+  stack:     -> (@value.map render-error).reduce aggregate-error
 }
 
 
