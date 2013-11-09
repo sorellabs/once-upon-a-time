@@ -25,7 +25,7 @@
 # WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 
 # -- Exports -----------------------------------------------------------
-module.expots = do
+module.exports = do
   Maybe:      require './maybe'
   Either:     require './either'
   Error:      require './error'
