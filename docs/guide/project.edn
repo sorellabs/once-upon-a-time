@@ -1,0 +1,7 @@
+{:title "Once Upon A Time"
+ :description "An algebraic prelude for LiveScript (and JavaScript)."
+ :layout "index.html"
+ :links [{:text "View on Github"
+          :url  "http://github.com/killdream/once-upon-a-time"}
+         {:text "Issues"
+          :url  "http://github.com/killdream/once-upon-a-time/issues"}]}
