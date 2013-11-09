@@ -30,16 +30,18 @@ Either     = require './either'
 
 
 # -- Implementation ----------------------------------------------------
-abstract-validation = derive Either, do
+module.exports = Validation = derive Either, do
   isFailure: false
   isSuccess: false
   Failure:   (v) -> derive Failure, value: v
   Success:   (v) -> derive Success, value: v
+  Left:      (v) -> @Failure v
+  of:        (v) -> @Success v
 
-Failure = derive abstract-validation, do
+Failure = derive Validation, do
   isFailure: true
   isLeft:    true
 
-Success = derive abstract-validation, do
+Success = derive Validation, do
   isSuccess: true
   isRight:   true
