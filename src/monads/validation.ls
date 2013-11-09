@@ -37,6 +37,9 @@ module.exports = Validation = derive Either, do
   Success:   (v) -> derive Success, value: v
   Left:      (v) -> @Failure v
   of:        (v) -> @Success v
+  to-string: -> @fold do
+                      * (n) -> "Validation.Failure(#n)"
+                      * (s) -> "Validation.Success(#s)"
 
 Failure = derive Validation, do
   isFailure: true

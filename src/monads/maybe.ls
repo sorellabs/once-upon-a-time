@@ -52,6 +52,8 @@ module.exports = Maybe = derive abstractMaybe, do
   # :: @Maybe a => (() → b) → b
   or-else: (f) -> this
 
+  # :: () → String
+  to-string: -> "Maybe.Just(#{@value})"
 
 Nothing = derive Maybe, do
   isNothing : true
@@ -60,4 +62,4 @@ Nothing = derive Maybe, do
   chain     : (f) -> this
   ap        : (b) -> b
   or-else   : (f) -> f!
-
+  to-string : -> 'Maybe.Nothing'

@@ -70,6 +70,11 @@ module.exports = Either = derive abstract-either, do
   or-else: (f) -> @fold do
                         * (l) -> f l
                         * (r) ~> @Right r
+
+  # :: () → String
+  to-string: -> @fold do
+                      * (l) -> "Either.Left(#l)"
+                      * (r) -> "Either.Right(#r)"
   
 Left = derive Either, do
   isLeft: true
