@@ -30,3 +30,4 @@ module.exports = do
   Either:     require './either'
   Error:      require './error'
   Validation: require './validation'
+  Promise:    require './promise'
