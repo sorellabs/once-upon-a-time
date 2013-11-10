@@ -71,8 +71,11 @@ add-bindings = (promise, on-success, on-failure) ->
   | otherwise                 => promise._value.fold on-failure, on-success
 
 queue = (promise, on-success, on-failure) ->
-  promise._pending.push [on-success, on-failure]
-  return promise
+  Promise.defer (resolve, reject) ->
+    promise._pending.push [
+      (a) -> (on-success a).fold resolve, reject
+      (b) -> (on-failure b).fold resolve, reject
+    ]
 
 transition = (promise, value) ->
   if promise._value isnt Nothing => throw new Error 'Promise already fulfilled.'
