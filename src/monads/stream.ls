@@ -42,7 +42,7 @@ module.exports = Stream = do
   concat: (as) ->
     | as is Nil   => this
     | this is Nil => as
-    | otherwise   => @tail.chain (v) ~> derive this,
+    | otherwise   => @tail.chain (v) ~> derive this, switch
                                           | v is Nil => { tail: Promise.of as }
                                           | _        => { tail: v.concat as   }
 
