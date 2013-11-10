@@ -1,4 +1,5 @@
 syntax: glob
+lib
 dist
 build
 node_modules
