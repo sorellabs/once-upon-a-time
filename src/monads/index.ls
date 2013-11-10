@@ -31,3 +31,4 @@ module.exports = do
   Error:      require './error'
   Validation: require './validation'
   Promise:    require './promise'
+  Stream:     require './stream'
