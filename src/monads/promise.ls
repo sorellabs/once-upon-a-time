@@ -46,11 +46,11 @@ module.exports = Promise = do
 
   map: (f) -> @chain (a) -> Promise.of (f a)
 
-  fold: (f, g) -> add-bindings this, f, g
+  fold: (f, g) --> add-bindings this, f, g
 
-  bimap: (f, g) -> @fold do
-                         * (s) -> Promise.of (f s)
-                         * (n) -> Promise.of (g n)
+  bimap: (f, g) --> @fold do
+                          * (s) -> Promise.of (f s)
+                          * (n) -> Promise.of (g n)
 
 
 # -- Private helpers ---------------------------------------------------
