@@ -52,6 +52,11 @@ module.exports = Promise = do
                           * (s) -> Promise.of (f s)
                           * (n) -> Promise.of (g n)
 
+  to-string: ->
+    | promise._value is Nothing => "Promise.Pending"
+    | otherwise                 => @fold do
+                                         * (s) -> "Promise.Fulfilled(#s)"
+                                         * (f) -> "Promise.Rejected(#s)"
 
 # -- Private helpers ---------------------------------------------------
 Nothing = {}
