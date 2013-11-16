@@ -1,0 +1,73 @@
+<!DOCTYPE html><html lang="en"><head><title>src/monads/promise</title></head><meta http-equiv="Content-Type" content="text/html; charset=utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0"><meta name="groc-relative-root" content="../../"><meta name="groc-document-path" content="src/monads/promise"><meta name="groc-project-path" content="src/monads/promise.ls"><link rel="stylesheet" type="text/css" media="all" href="../../assets/style.css"><script type="text/javascript" src="../../assets/behavior.js"></script><body><div id="meta"><div class="file-path">src/monads/promise.ls</div></div><div id="document"><div class="segment"><div class="comments "><div class="wrapper"><h1 id="module-monadspromise">Module monads/promise</h1>
+
+<p>Holds time-dependent values as time-independent.
+Copyright (c) 2013 Quildreen "Sorella" Motta <a href="&#109;&#97;&#x69;&#x6c;&#116;o:&#113;u&#105;&#108;&#x64;&#114;&#101;&#x65;&#x6e;&#64;&#103;&#x6d;&#97;&#105;&#x6c;.&#x63;om">&#113;u&#105;&#108;&#x64;&#114;&#101;&#x65;&#x6e;&#64;&#103;&#x6d;&#97;&#105;&#x6c;.&#x63;om</a>
+Permission is hereby granted, free of charge, to any person
+obtaining a copy of this software and associated documentation files
+(the "Software"), to deal in the Software without restriction,
+including without limitation the rights to use, copy, modify, merge,
+publish, distribute, sublicense, and/or sell copies of the Software,
+and to permit persons to whom the Software is furnished to do so,
+subject to the following conditions:
+The above copyright notice and this permission notice shall be
+included in all copies or substantial portions of the Software.
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND,
+EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF
+MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND
+NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE
+LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION
+OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION
+WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.</p></div></div></div><div class="segment"><div class="comments "><div class="wrapper"><p>-- Dependencies ------------------------------------------------------</p></div></div><div class="code"><div class="wrapper"><span class="p">{</span> <span class="nx">derive</span> <span class="p">}</span> <span class="o">=</span> <span class="nx">require</span> <span class="s">&#39;../prototypical&#39;</span>
+<span class="nv">Either     = </span><span class="nx">require</span> <span class="s">&#39;./either&#39;</span></div></div></div><div class="segment"><div class="comments "><div class="wrapper"><p>-- Implementation ----------------------------------------------------</p></div></div><div class="code"><div class="wrapper"><span class="nv">module.exports = Promise = </span><span class="nx">do</span>
+  <span class="nv">defer: </span><span class="nf">(f) -&gt;</span>
+    <span class="nv">p = </span><span class="nx">derive</span> <span class="nx">Promise</span><span class="p">,</span> <span class="nx">do</span>
+                        <span class="nv">_value   : </span><span class="nx">Nothing</span>
+                        <span class="nv">_pending : </span><span class="p">[]</span>
+    <span class="nx">f</span> <span class="p">(</span><span class="nf">(a) -&gt;</span> <span class="nx">fulfill</span> <span class="nx">p</span><span class="p">,</span> <span class="nx">a</span><span class="p">),</span> <span class="p">(</span><span class="nf">(b) -&gt;</span> <span class="nx">reject</span> <span class="nx">p</span><span class="p">,</span> <span class="nx">b</span><span class="p">)</span>
+    <span class="k">return</span> <span class="nx">p</span>
+  
+  <span class="k">of</span><span class="o">:</span> <span class="nf">(v) -&gt;</span> <span class="nx">@defer</span> <span class="nf">(resolve) -&gt;</span> <span class="nx">resolve</span> <span class="nx">v</span>
+
+  <span class="nv">chain: </span><span class="nf">(f) -&gt;</span> <span class="nx">add-bindings</span> <span class="k">this</span><span class="p">,</span> <span class="nx">f</span><span class="p">,</span> <span class="p">(</span><span class="nx">k</span> <span class="k">this</span><span class="p">)</span>
+
+  <span class="o">or-</span><span class="k">else</span><span class="o">:</span> <span class="nf">(f) -&gt;</span> <span class="nx">add-bindings</span> <span class="k">this</span><span class="p">,</span> <span class="p">(</span><span class="nx">k</span> <span class="k">this</span><span class="p">),</span> <span class="nx">f</span>
+
+  <span class="nv">map: </span><span class="nf">(f) -&gt;</span> <span class="nx">@chain</span> <span class="nf">(a) -&gt;</span> <span class="nx">Promise</span><span class="p">.</span><span class="nx">of</span> <span class="p">(</span><span class="nx">f</span> <span class="nx">a</span><span class="p">)</span>
+
+  <span class="nv">fold: </span><span class="nf">(f, g) --&gt;</span> <span class="nx">add-bindings</span> <span class="k">this</span><span class="p">,</span> <span class="nx">f</span><span class="p">,</span> <span class="nx">g</span>
+
+  <span class="nv">bimap: </span><span class="nf">(f, g) --&gt;</span> <span class="nx">@fold</span> <span class="nx">do</span>
+                          <span class="o">*</span> <span class="nf">(s) -&gt;</span> <span class="nx">Promise</span><span class="p">.</span><span class="nx">of</span> <span class="p">(</span><span class="nx">f</span> <span class="nx">s</span><span class="p">)</span>
+                          <span class="o">*</span> <span class="nf">(n) -&gt;</span> <span class="nx">Promise</span><span class="p">.</span><span class="nx">of</span> <span class="p">(</span><span class="nx">g</span> <span class="nx">n</span><span class="p">)</span>
+
+  <span class="k">to</span><span class="o">-</span><span class="nv">string: </span><span class="nf">-&gt;</span>
+    <span class="o">|</span> <span class="nx">promise</span><span class="p">.</span><span class="nx">_value</span> <span class="o">is</span> <span class="nx">Nothing</span> <span class="o">=&gt;</span> <span class="s">&quot;Promise.Pending&quot;</span>
+    <span class="o">|</span> <span class="nx">otherwise</span>                 <span class="o">=&gt;</span> <span class="nx">@fold</span> <span class="nx">do</span>
+                                         <span class="o">*</span> <span class="nf">(s) -&gt;</span> <span class="s">&quot;Promise.Fulfilled(#s)&quot;</span>
+                                         <span class="o">*</span> <span class="nf">(f) -&gt;</span> <span class="s">&quot;Promise.Rejected(#s)&quot;</span></div></div></div><div class="segment"><div class="comments "><div class="wrapper"><p>-- Private helpers ---------------------------------------------------</p></div></div><div class="code"><div class="wrapper"><span class="nv">Nothing = </span><span class="p">{}</span>
+
+<span class="nv">k = </span><span class="nf">(a) -&gt;</span> <span class="nf">(b) -&gt;</span> <span class="nx">a</span>
+
+<span class="nv">fulfill = </span><span class="nf">(promise, a) -&gt;</span> <span class="nx">transition</span> <span class="nx">promise</span><span class="p">,</span> <span class="nx">Either</span><span class="p">.</span><span class="nx">Right</span> <span class="nx">a</span>
+<span class="nv">reject  = </span><span class="nf">(promise, b) -&gt;</span> <span class="nx">transition</span> <span class="nx">promise</span><span class="p">,</span> <span class="nx">Either</span><span class="p">.</span><span class="nx">Left</span> <span class="nx">b</span>
+
+<span class="nv">add-bindings = </span><span class="nf">(promise, on-success, on-failure) -&gt;</span>
+  <span class="o">|</span> <span class="nx">promise</span><span class="p">.</span><span class="nx">_value</span> <span class="o">is</span> <span class="nx">Nothing</span> <span class="o">=&gt;</span> <span class="nx">queue</span> <span class="nx">promise</span><span class="p">,</span> <span class="kc">on</span><span class="o">-</span><span class="nx">success</span><span class="p">,</span> <span class="kc">on</span><span class="o">-</span><span class="nx">failure</span>
+  <span class="o">|</span> <span class="nx">otherwise</span>                 <span class="o">=&gt;</span> <span class="nx">promise</span><span class="p">.</span><span class="nx">_value</span><span class="p">.</span><span class="nx">fold</span> <span class="kc">on</span><span class="o">-</span><span class="nx">failure</span><span class="p">,</span> <span class="kc">on</span><span class="o">-</span><span class="nx">success</span>
+
+<span class="nv">queue = </span><span class="nf">(promise, on-success, on-failure) -&gt;</span>
+  <span class="nx">Promise</span><span class="p">.</span><span class="nx">defer</span> <span class="nf">(resolve, reject) -&gt;</span>
+    <span class="nx">promise</span><span class="p">.</span><span class="nx">_pending</span><span class="p">.</span><span class="nx">push</span> <span class="p">[</span>
+      <span class="nf">(a) -&gt;</span> <span class="p">(</span><span class="kc">on</span><span class="o">-</span><span class="nx">success</span> <span class="nx">a</span><span class="p">).</span><span class="nx">fold</span> <span class="nx">resolve</span><span class="p">,</span> <span class="nx">reject</span>
+      <span class="nf">(b) -&gt;</span> <span class="p">(</span><span class="kc">on</span><span class="o">-</span><span class="nx">failure</span> <span class="nx">b</span><span class="p">).</span><span class="nx">fold</span> <span class="nx">resolve</span><span class="p">,</span> <span class="nx">reject</span>
+    <span class="p">]</span>
+
+<span class="nv">transition = </span><span class="nf">(promise, value) -&gt;</span>
+  <span class="k">if</span> <span class="nx">promise</span><span class="p">.</span><span class="nx">_value</span> <span class="o">isnt</span> <span class="nx">Nothing</span> <span class="o">=&gt;</span> <span class="k">throw</span> <span class="k">new</span> <span class="nb">Error</span> <span class="s">&#39;Promise already fulfilled.&#39;</span>
+  <span class="nx">promise</span><span class="p">.</span><span class="nx">_value</span> <span class="o">:=</span> <span class="nx">value</span>
+  <span class="nx">invoke-pending-callbacks</span> <span class="nx">promise</span>
+
+<span class="nv">invoke-pending-callbacks = </span><span class="nf">(promise) -&gt;</span>
+  <span class="nv">value = </span><span class="nx">promise</span><span class="p">.</span><span class="nx">_value</span>
+  <span class="k">for</span> <span class="p">[</span><span class="nx">success</span><span class="p">,</span> <span class="nx">failure</span><span class="p">]</span> <span class="k">in</span> <span class="nx">promise</span><span class="p">.</span><span class="nx">_pending</span> <span class="o">=&gt;</span> <span class="nx">value</span><span class="p">.</span><span class="nx">fold</span> <span class="nx">failure</span><span class="p">,</span> <span class="nx">success</span>
+  <span class="nx">promise</span><span class="p">.</span><span class="nx">_pending</span> <span class="o">:=</span> <span class="p">[]</span></div></div></div></div></body></html>

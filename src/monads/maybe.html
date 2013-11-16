@@ -1,0 +1,36 @@
+<!DOCTYPE html><html lang="en"><head><title>src/monads/maybe</title></head><meta http-equiv="Content-Type" content="text/html; charset=utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0"><meta name="groc-relative-root" content="../../"><meta name="groc-document-path" content="src/monads/maybe"><meta name="groc-project-path" content="src/monads/maybe.ls"><link rel="stylesheet" type="text/css" media="all" href="../../assets/style.css"><script type="text/javascript" src="../../assets/behavior.js"></script><body><div id="meta"><div class="file-path">src/monads/maybe.ls</div></div><div id="document"><div class="segment"><div class="comments "><div class="wrapper"><h1 id="module-monadsmaybe">Module monads/maybe</h1>
+
+<p>The Maybe monad.
+Copyright (c) 2013 Quildreen "Sorella" Motta <a href="&#109;a&#105;&#108;&#116;&#x6f;:&#x71;&#117;&#105;&#108;&#100;&#114;&#x65;&#x65;&#110;&#64;&#103;&#x6d;&#97;&#105;&#x6c;&#x2e;&#99;&#x6f;&#x6d;">&#x71;&#117;&#105;&#108;&#100;&#114;&#x65;&#x65;&#110;&#64;&#103;&#x6d;&#97;&#105;&#x6c;&#x2e;&#99;&#x6f;&#x6d;</a>
+Permission is hereby granted, free of charge, to any person
+obtaining a copy of this software and associated documentation files
+(the "Software"), to deal in the Software without restriction,
+including without limitation the rights to use, copy, modify, merge,
+publish, distribute, sublicense, and/or sell copies of the Software,
+and to permit persons to whom the Software is furnished to do so,
+subject to the following conditions:
+The above copyright notice and this permission notice shall be
+included in all copies or substantial portions of the Software.
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND,
+EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF
+MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND
+NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE
+LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION
+OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION
+WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.</p></div></div></div><div class="segment"><div class="comments "><div class="wrapper"><p>-- Dependencies ------------------------------------------------------</p></div></div><div class="code"><div class="wrapper"><span class="p">{</span> <span class="nx">derive</span> <span class="p">}</span> <span class="o">=</span> <span class="nx">require</span> <span class="s">&#39;../prototypical&#39;</span></div></div></div><div class="segment"><div class="comments "><div class="wrapper"><p>-- Implementation ----------------------------------------------------</p></div></div><div class="code"><div class="wrapper"><span class="nv">abstractMaybe = </span><span class="p">{</span>
+  <span class="nv">isNothing : </span><span class="kc">false</span>
+  <span class="nv">isJust    : </span><span class="kc">false</span>
+  <span class="nv">Nothing: </span><span class="nf">-&gt;</span> <span class="nx">Nothing</span>
+  <span class="nv">Just: </span>   <span class="nf">(v) -&gt;</span> <span class="nx">@</span><span class="k">of</span> <span class="nx">v</span>
+<span class="p">}</span>
+
+<span class="nv">module.exports = Maybe = </span><span class="nx">derive</span> <span class="nx">abstractMaybe</span><span class="p">,</span> <span class="nx">do</span></div></div></div><div class="segment"><div class="comments "><div class="wrapper"><p>:: a → Maybe a</p></div></div><div class="code"><div class="wrapper">  <span class="k">of</span><span class="o">:</span> <span class="nf">(v) -&gt;</span> <span class="nx">derive</span> <span class="nx">Maybe</span><span class="p">,</span> <span class="nv">value: </span><span class="nx">v</span><span class="p">,</span> <span class="nv">isJust: </span><span class="kc">true</span></div></div></div><div class="segment"><div class="comments doc-section"><div class="wrapper"><p><span class='doc-section-header'> Maybe a => (a → b) → Maybe b</span></p></div></div><div class="code"><div class="wrapper">  <span class="nv">map: </span><span class="nf">(f) -&gt;</span> <span class="nx">@</span><span class="k">of</span> <span class="p">(</span><span class="nx">f</span> <span class="nx">@value</span><span class="p">)</span></div></div></div><div class="segment"><div class="comments doc-section"><div class="wrapper"><p><span class='doc-section-header'> Maybe a => (a → Maybe b) → Maybe b</span></p></div></div><div class="code"><div class="wrapper">  <span class="nv">chain: </span><span class="nf">(f) -&gt;</span> <span class="nx">f</span> <span class="nx">@value</span></div></div></div><div class="segment"><div class="comments doc-section"><div class="wrapper"><p><span class='doc-section-header'> Maybe (a → b) => F a → F b</span></p></div></div><div class="code"><div class="wrapper">  <span class="nv">ap: </span><span class="nf">(b) -&gt;</span> <span class="nx">b</span><span class="p">.</span><span class="nx">map</span> <span class="nx">@value</span></div></div></div><div class="segment"><div class="comments doc-section"><div class="wrapper"><p><span class='doc-section-header'> Maybe a => (() → b) → b</span></p></div></div><div class="code"><div class="wrapper">  <span class="o">or-</span><span class="k">else</span><span class="o">:</span> <span class="nf">(f) -&gt;</span> <span class="k">this</span></div></div></div><div class="segment"><div class="comments "><div class="wrapper"><p>:: () → String</p></div></div><div class="code"><div class="wrapper">  <span class="k">to</span><span class="o">-</span><span class="nv">string: </span><span class="nf">-&gt;</span> <span class="s">&quot;Maybe.Just(</span><span class="si">#{</span><span class="nx">@value</span><span class="si">}</span><span class="s">)&quot;</span>
+
+<span class="nv">Nothing = </span><span class="nx">derive</span> <span class="nx">Maybe</span><span class="p">,</span> <span class="nx">do</span>
+  <span class="nv">isNothing : </span><span class="kc">true</span>
+  <span class="k">of</span>        <span class="o">:</span> <span class="nf">-&gt;</span> <span class="nx">Nothing</span>
+  <span class="nv">map       : </span><span class="nf">(f) -&gt;</span> <span class="k">this</span>
+  <span class="nv">chain     : </span><span class="nf">(f) -&gt;</span> <span class="k">this</span>
+  <span class="nv">ap        : </span><span class="nf">(b) -&gt;</span> <span class="nx">b</span>
+  <span class="o">or-</span><span class="k">else</span>   <span class="o">:</span> <span class="nf">(f) -&gt;</span> <span class="nx">f</span><span class="o">!</span>
+  <span class="k">to</span><span class="o">-</span><span class="nv">string : </span><span class="nf">-&gt;</span> <span class="s">&#39;Maybe.Nothing&#39;</span></div></div></div></div></body></html>

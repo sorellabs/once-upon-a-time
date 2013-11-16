@@ -1,0 +1,38 @@
+<!DOCTYPE html><html lang="en"><head><title>src/monads/validation</title></head><meta http-equiv="Content-Type" content="text/html; charset=utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0"><meta name="groc-relative-root" content="../../"><meta name="groc-document-path" content="src/monads/validation"><meta name="groc-project-path" content="src/monads/validation.ls"><link rel="stylesheet" type="text/css" media="all" href="../../assets/style.css"><script type="text/javascript" src="../../assets/behavior.js"></script><body><div id="meta"><div class="file-path">src/monads/validation.ls</div></div><div id="document"><div class="segment"><div class="comments "><div class="wrapper"><h1 id="module-monadsvalidation">Module monads/validation</h1>
+
+<p>The Validation monad (Either with API for errors).
+Copyright (c) 2013 Quildreen "Sorella" Motta <a href="&#109;&#97;&#105;&#x6c;t&#x6f;:q&#x75;i&#x6c;&#x64;&#114;e&#101;&#110;&#64;&#x67;&#x6d;&#97;&#105;&#x6c;.&#99;&#x6f;&#109;">q&#x75;i&#x6c;&#x64;&#114;e&#101;&#110;&#64;&#x67;&#x6d;&#97;&#105;&#x6c;.&#99;&#x6f;&#109;</a>
+Permission is hereby granted, free of charge, to any person
+obtaining a copy of this software and associated documentation files
+(the "Software"), to deal in the Software without restriction,
+including without limitation the rights to use, copy, modify, merge,
+publish, distribute, sublicense, and/or sell copies of the Software,
+and to permit persons to whom the Software is furnished to do so,
+subject to the following conditions:
+The above copyright notice and this permission notice shall be
+included in all copies or substantial portions of the Software.
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND,
+EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF
+MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND
+NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE
+LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION
+OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION
+WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.</p></div></div></div><div class="segment"><div class="comments "><div class="wrapper"><p>-- Dependencies ------------------------------------------------------</p></div></div><div class="code"><div class="wrapper"><span class="p">{</span> <span class="nx">derive</span> <span class="p">}</span> <span class="o">=</span> <span class="nx">require</span> <span class="s">&#39;../prototypical&#39;</span>
+<span class="nv">Either     = </span><span class="nx">require</span> <span class="s">&#39;./either&#39;</span></div></div></div><div class="segment"><div class="comments "><div class="wrapper"><p>-- Implementation ----------------------------------------------------</p></div></div><div class="code"><div class="wrapper"><span class="nv">module.exports = Validation = </span><span class="nx">derive</span> <span class="nx">Either</span><span class="p">,</span> <span class="nx">do</span>
+  <span class="nv">isFailure: </span><span class="kc">false</span>
+  <span class="nv">isSuccess: </span><span class="kc">false</span>
+  <span class="nv">Failure: </span>  <span class="nf">(v) -&gt;</span> <span class="nx">derive</span> <span class="nx">Failure</span><span class="p">,</span> <span class="nv">value: </span><span class="nx">v</span>
+  <span class="nv">Success: </span>  <span class="nf">(v) -&gt;</span> <span class="nx">derive</span> <span class="nx">Success</span><span class="p">,</span> <span class="nv">value: </span><span class="nx">v</span>
+  <span class="nv">Left: </span>     <span class="nf">(v) -&gt;</span> <span class="nx">@Failure</span> <span class="nx">v</span>
+  <span class="k">of</span><span class="o">:</span>        <span class="nf">(v) -&gt;</span> <span class="nx">@Success</span> <span class="nx">v</span>
+  <span class="k">to</span><span class="o">-</span><span class="nv">string: </span><span class="nf">-&gt;</span> <span class="nx">@fold</span> <span class="nx">do</span>
+                      <span class="o">*</span> <span class="nf">(n) -&gt;</span> <span class="s">&quot;Validation.Failure(#n)&quot;</span>
+                      <span class="o">*</span> <span class="nf">(s) -&gt;</span> <span class="s">&quot;Validation.Success(#s)&quot;</span>
+
+<span class="nv">Failure = </span><span class="nx">derive</span> <span class="nx">Validation</span><span class="p">,</span> <span class="nx">do</span>
+  <span class="nv">isFailure: </span><span class="kc">true</span>
+  <span class="nv">isLeft: </span>   <span class="kc">true</span>
+
+<span class="nv">Success = </span><span class="nx">derive</span> <span class="nx">Validation</span><span class="p">,</span> <span class="nx">do</span>
+  <span class="nv">isSuccess: </span><span class="kc">true</span>
+  <span class="nv">isRight: </span>  <span class="kc">true</span></div></div></div></div></body></html>

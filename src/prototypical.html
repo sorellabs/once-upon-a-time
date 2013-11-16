@@ -1,0 +1,25 @@
+<!DOCTYPE html><html lang="en"><head><title>src/prototypical</title></head><meta http-equiv="Content-Type" content="text/html; charset=utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0"><meta name="groc-relative-root" content="../"><meta name="groc-document-path" content="src/prototypical"><meta name="groc-project-path" content="src/prototypical.ls"><link rel="stylesheet" type="text/css" media="all" href="../assets/style.css"><script type="text/javascript" src="../assets/behavior.js"></script><body><div id="meta"><div class="file-path">src/prototypical.ls</div></div><div id="document"><div class="segment"><div class="comments "><div class="wrapper"><h1 id="module-prototypical">Module prototypical</h1>
+
+<p>Prototypical utilities for structural typing.
+Copyright (c) 2013 Quildreen "Sorella" Motta <a href="&#x6d;&#x61;&#x69;&#x6c;&#116;&#x6f;:&#113;&#x75;&#x69;&#x6c;&#100;r&#101;&#x65;&#x6e;&#64;&#103;&#x6d;&#97;&#x69;&#x6c;&#46;&#x63;o&#x6d;">&#113;&#x75;&#x69;&#x6c;&#100;r&#101;&#x65;&#x6e;&#64;&#103;&#x6d;&#97;&#x69;&#x6c;&#46;&#x63;o&#x6d;</a>
+Permission is hereby granted, free of charge, to any person
+obtaining a copy of this software and associated documentation files
+(the "Software"), to deal in the Software without restriction,
+including without limitation the rights to use, copy, modify, merge,
+publish, distribute, sublicense, and/or sell copies of the Software,
+and to permit persons to whom the Software is furnished to do so,
+subject to the following conditions:
+The above copyright notice and this permission notice shall be
+included in all copies or substantial portions of the Software.
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND,
+EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF
+MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND
+NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE
+LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION
+OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION
+WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.</p></div></div></div><div class="segment"><div class="comments "><div class="wrapper"><p>-- Aliases -----------------------------------------------------------</p></div></div><div class="code"><div class="wrapper"><span class="p">{</span> <span class="nx">keys</span><span class="p">,</span> <span class="nx">create</span><span class="o">:</span><span class="nx">inherit</span> <span class="p">}</span> <span class="o">=</span> <span class="nb">Object</span>
+<span class="p">{</span> <span class="nx">isArray</span> <span class="p">}</span>              <span class="o">=</span> <span class="nb">Array</span></div></div></div><div class="segment"><div class="comments "><div class="wrapper"><p>-- Public API --------------------------------------------------------</p></div></div></div><div class="segment"><div class="comments "><div class="wrapper"><p>:: (Object*, [Object]) → Object</p></div></div><div class="code"><div class="wrapper"><span class="nx">export</span> <span class="nv">destructive-merge = </span><span class="nf">(target, sources) --&gt;</span>
+  <span class="k">for</span> <span class="nx">source</span> <span class="k">in</span> <span class="nx">sources</span> <span class="o">=&gt;</span> <span class="nx">target</span> <span class="o">&lt;&lt;&lt;</span> <span class="nx">source</span>
+  <span class="k">return</span> <span class="nx">target</span></div></div></div><div class="segment"><div class="comments "><div class="wrapper"><p>:: [Object] → Object</p></div></div><div class="code"><div class="wrapper"><span class="nx">export</span> <span class="nv">merge = </span><span class="nf">(objects) -&gt;</span>
+  <span class="nx">destructive-merge</span> <span class="p">{},</span> <span class="nx">objects</span></div></div></div><div class="segment"><div class="comments "><div class="wrapper"><p>:: (a:Object, Object...) → Object &lt;: a</p></div></div><div class="code"><div class="wrapper"><span class="nx">export</span> <span class="nv">derive = </span><span class="nf">(prototype, ...mixins) -&gt;</span>
+  <span class="nx">destructive-merge</span> <span class="p">(</span><span class="nx">inherit</span> <span class="nx">prototype</span><span class="p">),</span> <span class="nx">mixins</span></div></div></div></div></body></html>
