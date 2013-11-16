@@ -69,7 +69,12 @@ include anywhere.
 
 ## Documentation
 
-( ... )
+You can either [read it online][online], or generate it yourself:
+
+    $ make documentation
+    $ open docs/literate/index.html
+
+[online]: http://killdream.github.io/once-upon-a-time
 
 
 ## Tests
