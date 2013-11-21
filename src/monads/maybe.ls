@@ -3,7 +3,7 @@
 # Provides an implementation of the `Maybe[a]` monad.  
 # (In some languages, the `Maybe` monad is called `Option` or `Optional`).
 
-/** }
+/** ^
  * Copyright (c) 2013 Quildreen "Sorella" Motta <quildreen@gmail.com>
  *
  * Permission is hereby granted, free of charge, to any person
@@ -25,9 +25,9 @@
  * OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION
  * WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  *
- * @module "monads/maybe";
- * @author "Quildreen Motta";
- * @exports Maybe;
+ * @module monads/maybe
+ * @author Quildreen Motta
+ * @exports Maybe
  */
 
 
@@ -57,32 +57,121 @@
 
 
 # ## Implementation ####################################################
-abstractMaybe = {
-  isNothing : false
-  isJust    : false
-  Nothing: -> Nothing
-  Just:    (v) -> @of v
-}
 
-module.exports = Maybe = derive abstractMaybe, do
-  # :: a → Maybe a
+/** 
+ * Base values for the `Nothing` and `Just` cases.
+ */
+abstract-maybe = do
+  /**
+   * Tests if the Monad contains a `Nothing`.
+   *
+   * @type Boolean
+   */
+  is-nothing : false
+
+  /**
+   * Tests if the Monad contains a `Just`.
+   *
+   * @type Boolean
+   */
+  is-just    : false
+
+  /**
+   * Creates a new `Maybe` with no value.
+   *
+   * @type Unit -> Maybe(a)
+   */
+  Nothing: -> Nothing
+
+  /**
+   * Creates a new `Maybe` filled with one value.
+   *
+   * @type a -> Maybe(a)
+   */
+  Just:    (v) -> @of v
+
+
+
+/**
+ * The Maybe monad.
+ *
+ * @type Maybe <: (Applicative, Functor, Monad, Recoverable, Eq, Show)
+ */
+module.exports = Maybe = derive abstract-maybe, do
+
+  # ### Group: Applicative #############################################
+  
+  /**
+   * Creates a new `Maybe` monad with a value.
+   *
+   * @type a -> Maybe(a)
+   */
   of: (v) -> derive Maybe, value: v, isJust: true
 
-  # :: @Maybe a => (a → b) → Maybe b
+  /**
+   * Applies a function from inside of the `Maybe` monad to another 
+   * `Applicative` type.
+   *
+   * @type (@Maybe(a -> b), f:Applicative) => f(a) -> f(b)
+   */
+  ap: (b) -> b.map @value
+  
+
+  # ### Group: Functor #################################################
+
+  /**
+   * Transforms the value of the `Maybe` monad using a regular function.
+   *
+   * @type @Maybe(a) => (a -> b) -> Maybe(b)
+   */
   map: (f) -> @of (f @value)
 
-  # :: @Maybe a => (a → Maybe b) → Maybe b
+
+  # ### Group: Monad ###################################################
+
+  /**
+   * Transforms the value of the `Maybe` monad using a function to a
+   * monad of the same type.
+   *
+   * @type @Maybe(a) => (a -> Maybe(b)) -> Maybe(b)
+   */
   chain: (f) -> f @value
 
-  # :: @Maybe (a → b) => F a → F b
-  ap: (b) -> b.map @value
+  
+  # ### Group: Recoverable #############################################
 
-  # :: @Maybe a => (() → b) → b
+  /**
+   * Applies a function if the `Maybe` monad has no value.
+   *
+   * @type @Maybe(a) => (Unit -> Maybe(b)) -> Maybe(b)
+   */
   or-else: (f) -> this
 
-  # :: () → String
+
+  # ### Group: Show ####################################################
+
+  /**
+   * Returns a textual representation of the `Maybe` monad.
+   *
+   * @type Unit -> String
+   */
   to-string: -> "Maybe.Just(#{@value})"
 
+
+  # ### Group: Eq ######################################################
+
+  /**
+   * Tests if a Maybe monad is equal to another Maybe monad.
+   *
+   * @type @Maybe(a) => Maybe(a) -> Boolean
+   */
+   is-equal: (a) -> Boolean
+     | @is-nothing => b.is-nothing
+     | @is-just    => b.value is @value
+
+
+
+# The Nothing case for the Maybe monad.
 Nothing = derive Maybe, do
   isNothing : true
   of        : -> Nothing
