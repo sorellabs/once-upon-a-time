@@ -1,31 +1,79 @@
-<!DOCTYPE html><html lang="en"><head><title>src/monads/maybe</title></head><meta http-equiv="Content-Type" content="text/html; charset=utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0"><meta name="groc-relative-root" content="../../"><meta name="groc-document-path" content="src/monads/maybe"><meta name="groc-project-path" content="src/monads/maybe.ls"><link rel="stylesheet" type="text/css" media="all" href="../../assets/style.css"><script type="text/javascript" src="../../assets/behavior.js"></script><body><div id="meta"><div class="file-path">src/monads/maybe.ls</div></div><div id="document"><div class="segment"><div class="comments "><div class="wrapper"><h1 id="module-monadsmaybe">Module monads/maybe</h1>
+<!DOCTYPE html><html lang="en"><head><title>src/monads/maybe</title></head><meta http-equiv="Content-Type" content="text/html; charset=utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0"><meta name="groc-relative-root" content="../../"><meta name="groc-document-path" content="src/monads/maybe"><meta name="groc-project-path" content="src/monads/maybe.ls"><link rel="stylesheet" type="text/css" media="all" href="../../assets/style.css"><script type="text/javascript" src="../../assets/behavior.js"></script><body><div id="meta"><div class="file-path">src/monads/maybe.ls</div></div><div id="document"><div class="segment"><div class="comments "><div class="wrapper"><h1 id="monad-maybea">Monad: Maybe[a]</h1></div></div></div><div class="segment"><div class="comments "><div class="wrapper"><p>Commonly represents a value that may, or may not be available.
+(In some languages, the <code>Maybe</code> monad is called <code>Option</code> or <code>Optional</code>).</p></div></div></div><div class="segment"><div class="code folded"><div class="wrapper marker"><span class="c1">/** </span></div><div class="wrapper"><span class="cm">/** </span>
+<span class="cm"> * Copyright (c) 2013 Quildreen &quot;Sorella&quot; Motta &lt;quildreen@gmail.com&gt;</span>
+<span class="cm"> *</span>
+<span class="cm"> * Permission is hereby granted, free of charge, to any person</span>
+<span class="cm"> * obtaining a copy of this software and associated documentation files</span>
+<span class="cm"> * (the &quot;Software&quot;), to deal in the Software without restriction,</span>
+<span class="cm"> * including without limitation the rights to use, copy, modify, merge,</span>
+<span class="cm"> * publish, distribute, sublicense, and/or sell copies of the Software,</span>
+<span class="cm"> * and to permit persons to whom the Software is furnished to do so,</span>
+<span class="cm"> * subject to the following conditions:</span>
+<span class="cm"> *</span>
+<span class="cm"> * The above copyright notice and this permission notice shall be</span>
+<span class="cm"> * included in all copies or substantial portions of the Software.</span>
+<span class="cm"> *</span>
+<span class="cm"> * THE SOFTWARE IS PROVIDED &quot;AS IS&quot;, WITHOUT WARRANTY OF ANY KIND,</span>
+<span class="cm"> * EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF</span>
+<span class="cm"> * MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND</span>
+<span class="cm"> * NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE</span>
+<span class="cm"> * LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION</span>
+<span class="cm"> * OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION</span>
+<span class="cm"> * WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.</span>
+<span class="cm"> *</span>
+<span class="cm"> * @module monads/maybe</span>
+<span class="cm"> * @author Quildreen Motta</span>
+<span class="cm"> * @exports Maybe</span>
+<span class="cm"> */</span></div></div></div><div class="segment"><div class="comments "><div class="wrapper"><p><code>Maybe[a]</code> allows one to model, explicitly, values that may not be
+always present (i.e.: nullable values), without the problems
+associated with using <code>null</code> and <code>undefined</code>. Furthermore, <code>Maybe[a]</code>
+values can be composed in manners that are similar to other monads, by
+using the generic sequencing and composition.</p></div></div></div><div class="segment"><div class="comments "><div class="wrapper"><p>There is two possibilities in the <code>Maybe[a]</code> monad. Either we have a
+value, indicated by the constructor <code>Just(a)</code>, or we don't have a
+value, indicated by the constructor <code>Nothing()</code>. As such, the
+<code>Maybe[a]</code> monad may be used safely to encode any case where it's
+possible to either have a value or not, without the possibility of
+ambiguity.</p></div></div></div><div class="segment"><div class="comments "><div class="wrapper"><p>Another interesting property of this monad is that, since you need to
+explicitly wrap and unwrap your values, you can't have a
+<code>NullPointerException</code> or <code>TypeError</code> by using things that don't exist
+(e.g.: a library broke your expectations of the code behaviour, or you
+forgot to check for <code>null</code> values). This way, using a <code>Maybe[a]</code> monad
+reduces the number of runtime errors.</p></div></div></div><div class="segment"><div class="comments "><div class="wrapper"><h2 id="dependencies">Dependencies</h2></div></div></div><div class="segment"><div class="code"><div class="wrapper"><span class="p">{</span> <span class="nx">derive</span> <span class="p">}</span> <span class="o">=</span> <span class="nx">require</span> <span class="s">&#39;../prototypical&#39;</span></div></div></div><div class="segment"><div class="comments "><div class="wrapper"><h2 id="implementation">Implementation</h2></div></div></div><div class="segment"><div class="comments "><div class="wrapper"><p>Base values for the <code>Nothing</code> and <code>Just</code> cases.</p></div></div><div class="code"><div class="wrapper"><span class="nv">abstract-maybe = </span><span class="nx">do</span></div></div></div><div class="segment"><div class="comments doc-section"><div class="wrapper"><p><span class='doc-section-header'> of type <em>Boolean</em></span></p>
 
-<p>The Maybe monad.
-Copyright (c) 2013 Quildreen "Sorella" Motta <a href="&#109;a&#105;&#108;&#116;&#x6f;:&#x71;&#117;&#105;&#108;&#100;&#114;&#x65;&#x65;&#110;&#64;&#103;&#x6d;&#97;&#105;&#x6c;&#x2e;&#99;&#x6f;&#x6d;">&#x71;&#117;&#105;&#108;&#100;&#114;&#x65;&#x65;&#110;&#64;&#103;&#x6d;&#97;&#105;&#x6c;&#x2e;&#99;&#x6f;&#x6d;</a>
-Permission is hereby granted, free of charge, to any person
-obtaining a copy of this software and associated documentation files
-(the "Software"), to deal in the Software without restriction,
-including without limitation the rights to use, copy, modify, merge,
-publish, distribute, sublicense, and/or sell copies of the Software,
-and to permit persons to whom the Software is furnished to do so,
-subject to the following conditions:
-The above copyright notice and this permission notice shall be
-included in all copies or substantial portions of the Software.
-THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND,
-EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF
-MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND
-NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE
-LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION
-OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION
-WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.</p></div></div></div><div class="segment"><div class="comments "><div class="wrapper"><p>-- Dependencies ------------------------------------------------------</p></div></div><div class="code"><div class="wrapper"><span class="p">{</span> <span class="nx">derive</span> <span class="p">}</span> <span class="o">=</span> <span class="nx">require</span> <span class="s">&#39;../prototypical&#39;</span></div></div></div><div class="segment"><div class="comments "><div class="wrapper"><p>-- Implementation ----------------------------------------------------</p></div></div><div class="code"><div class="wrapper"><span class="nv">abstractMaybe = </span><span class="p">{</span>
-  <span class="nv">isNothing : </span><span class="kc">false</span>
-  <span class="nv">isJust    : </span><span class="kc">false</span>
-  <span class="nv">Nothing: </span><span class="nf">-&gt;</span> <span class="nx">Nothing</span>
-  <span class="nv">Just: </span>   <span class="nf">(v) -&gt;</span> <span class="nx">@</span><span class="k">of</span> <span class="nx">v</span>
-<span class="p">}</span>
+<p>Tests if the Monad contains a <code>Nothing</code>.</p></div></div><div class="code"><div class="wrapper">  <span class="o">is-</span><span class="nv">nothing : </span><span class="kc">false</span></div></div></div><div class="segment"><div class="comments doc-section"><div class="wrapper"><p><span class='doc-section-header'> of type <em>Boolean</em></span></p>
 
-<span class="nv">module.exports = Maybe = </span><span class="nx">derive</span> <span class="nx">abstractMaybe</span><span class="p">,</span> <span class="nx">do</span></div></div></div><div class="segment"><div class="comments "><div class="wrapper"><p>:: a → Maybe a</p></div></div><div class="code"><div class="wrapper">  <span class="k">of</span><span class="o">:</span> <span class="nf">(v) -&gt;</span> <span class="nx">derive</span> <span class="nx">Maybe</span><span class="p">,</span> <span class="nv">value: </span><span class="nx">v</span><span class="p">,</span> <span class="nv">isJust: </span><span class="kc">true</span></div></div></div><div class="segment"><div class="comments doc-section"><div class="wrapper"><p><span class='doc-section-header'> Maybe a => (a → b) → Maybe b</span></p></div></div><div class="code"><div class="wrapper">  <span class="nv">map: </span><span class="nf">(f) -&gt;</span> <span class="nx">@</span><span class="k">of</span> <span class="p">(</span><span class="nx">f</span> <span class="nx">@value</span><span class="p">)</span></div></div></div><div class="segment"><div class="comments doc-section"><div class="wrapper"><p><span class='doc-section-header'> Maybe a => (a → Maybe b) → Maybe b</span></p></div></div><div class="code"><div class="wrapper">  <span class="nv">chain: </span><span class="nf">(f) -&gt;</span> <span class="nx">f</span> <span class="nx">@value</span></div></div></div><div class="segment"><div class="comments doc-section"><div class="wrapper"><p><span class='doc-section-header'> Maybe (a → b) => F a → F b</span></p></div></div><div class="code"><div class="wrapper">  <span class="nv">ap: </span><span class="nf">(b) -&gt;</span> <span class="nx">b</span><span class="p">.</span><span class="nx">map</span> <span class="nx">@value</span></div></div></div><div class="segment"><div class="comments doc-section"><div class="wrapper"><p><span class='doc-section-header'> Maybe a => (() → b) → b</span></p></div></div><div class="code"><div class="wrapper">  <span class="o">or-</span><span class="k">else</span><span class="o">:</span> <span class="nf">(f) -&gt;</span> <span class="k">this</span></div></div></div><div class="segment"><div class="comments "><div class="wrapper"><p>:: () → String</p></div></div><div class="code"><div class="wrapper">  <span class="k">to</span><span class="o">-</span><span class="nv">string: </span><span class="nf">-&gt;</span> <span class="s">&quot;Maybe.Just(</span><span class="si">#{</span><span class="nx">@value</span><span class="si">}</span><span class="s">)&quot;</span>
+<p>Tests if the Monad contains a <code>Just</code>.</p></div></div><div class="code"><div class="wrapper">  <span class="o">is-</span><span class="nv">just    : </span><span class="kc">false</span></div></div></div><div class="segment"><div class="comments doc-section"><div class="wrapper"><p><span class='doc-section-header'> of type <em>Unit -> Maybe(a)</em></span></p>
 
+<p>Creates a new <code>Maybe</code> with no value.</p></div></div><div class="code"><div class="wrapper">  <span class="nv">Nothing: </span><span class="nf">-&gt;</span> <span class="nx">Nothing</span></div></div></div><div class="segment"><div class="comments doc-section"><div class="wrapper"><p><span class='doc-section-header'> of type <em>a -> Maybe(a)</em></span></p>
+
+<p>Creates a new <code>Maybe</code> filled with one value.</p></div></div><div class="code"><div class="wrapper">  <span class="nv">Just: </span>   <span class="nf">(v) -&gt;</span> <span class="nx">@</span><span class="k">of</span> <span class="nx">v</span></div></div></div><div class="segment"><div class="comments doc-section"><div class="wrapper"><p><span class='doc-section-header'> of type <em>Maybe &lt;: (Applicative, Functor, Monad, Recoverable, Eq, Show)</em></span></p>
+
+<p>The Maybe monad.</p></div></div><div class="code"><div class="wrapper"><span class="nv">module.exports = Maybe = </span><span class="nx">derive</span> <span class="nx">abstract-maybe</span><span class="p">,</span> <span class="nx">do</span></div></div></div><div class="segment"><div class="comments "><div class="wrapper"><h3 id="group-applicative">Group: Applicative</h3></div></div><div class="code"><div class="wrapper">  </div></div></div><div class="segment"><div class="comments doc-section"><div class="wrapper"><p><span class='doc-section-header'> of type <em>a -> Maybe(a)</em></span></p>
+
+<p>Creates a new <code>Maybe</code> monad with a value.</p></div></div><div class="code"><div class="wrapper">  <span class="k">of</span><span class="o">:</span> <span class="nf">(v) -&gt;</span> <span class="nx">derive</span> <span class="nx">Maybe</span><span class="p">,</span> <span class="nv">value: </span><span class="nx">v</span><span class="p">,</span> <span class="nv">isJust: </span><span class="kc">true</span></div></div></div><div class="segment"><div class="comments doc-section"><div class="wrapper"><p><span class='doc-section-header'> of type <em>(@Maybe(a -> b), f:Applicative) => f(a) -> f(b)</em></span></p>
+
+<p>Applies a function from inside of the <code>Maybe</code> monad to another 
+<code>Applicative</code> type.</p></div></div><div class="code"><div class="wrapper">  <span class="nv">ap: </span><span class="nf">(b) -&gt;</span> <span class="nx">b</span><span class="p">.</span><span class="nx">map</span> <span class="nx">@value</span>
+  </div></div></div><div class="segment"><div class="comments "><div class="wrapper"><h3 id="group-functor">Group: Functor</h3></div></div></div><div class="segment"><div class="comments doc-section"><div class="wrapper"><p><span class='doc-section-header'> of type <em>@Maybe(a) => (a -> b) -> Maybe(b)</em></span></p>
+
+<p>Transforms the value of the <code>Maybe</code> monad using a regular function.</p></div></div><div class="code"><div class="wrapper">  <span class="nv">map: </span><span class="nf">(f) -&gt;</span> <span class="nx">@</span><span class="k">of</span> <span class="p">(</span><span class="nx">f</span> <span class="nx">@value</span><span class="p">)</span></div></div></div><div class="segment"><div class="comments "><div class="wrapper"><h3 id="group-monad">Group: Monad</h3></div></div></div><div class="segment"><div class="comments doc-section"><div class="wrapper"><p><span class='doc-section-header'> of type <em>@Maybe(a) => (a -> Maybe(b)) -> Maybe(b)</em></span></p>
+
+<p>Transforms the value of the <code>Maybe</code> monad using a function to a
+monad of the same type.</p></div></div><div class="code"><div class="wrapper">  <span class="nv">chain: </span><span class="nf">(f) -&gt;</span> <span class="nx">f</span> <span class="nx">@value</span>
+
+  </div></div></div><div class="segment"><div class="comments "><div class="wrapper"><h3 id="group-recoverable">Group: Recoverable</h3></div></div></div><div class="segment"><div class="comments doc-section"><div class="wrapper"><p><span class='doc-section-header'> of type <em>@Maybe(a) => (Unit -> Maybe(b)) -> Maybe(b)</em></span></p>
+
+<p>Applies a function if the <code>Maybe</code> monad has no value.</p></div></div><div class="code"><div class="wrapper">  <span class="o">or-</span><span class="k">else</span><span class="o">:</span> <span class="nf">(f) -&gt;</span> <span class="k">this</span></div></div></div><div class="segment"><div class="comments "><div class="wrapper"><h3 id="group-show">Group: Show</h3></div></div></div><div class="segment"><div class="comments doc-section"><div class="wrapper"><p><span class='doc-section-header'> of type <em>Unit -> String</em></span></p>
+
+<p>Returns a textual representation of the <code>Maybe</code> monad.</p></div></div><div class="code"><div class="wrapper">  <span class="k">to</span><span class="o">-</span><span class="nv">string: </span><span class="nf">-&gt;</span> <span class="s">&quot;Maybe.Just(</span><span class="si">#{</span><span class="nx">@value</span><span class="si">}</span><span class="s">)&quot;</span></div></div></div><div class="segment"><div class="comments "><div class="wrapper"><h3 id="group-eq">Group: Eq</h3></div></div></div><div class="segment"><div class="comments doc-section"><div class="wrapper"><p><span class='doc-section-header'> of type <em>@Maybe(a) => Maybe(a) -> Boolean</em></span></p>
+
+<p>Tests if a Maybe monad is equal to another Maybe monad.</p></div></div><div class="code"><div class="wrapper">   <span class="o">is-</span><span class="nv">equal: </span><span class="nf">(a) -&gt;</span> <span class="nb">Boolean</span>
+     <span class="o">|</span> <span class="nx">@</span><span class="o">is-</span><span class="nx">nothing</span>           <span class="o">=&gt;</span> <span class="nx">a</span><span class="p">.</span><span class="nx">is-nothing</span>
+     <span class="o">|</span> <span class="nx">@</span><span class="o">is-</span><span class="nx">just</span> <span class="o">&amp;&amp;</span> <span class="nx">a</span><span class="p">.</span><span class="nx">is-just</span> <span class="o">=&gt;</span> <span class="nx">a</span><span class="p">.</span><span class="nx">value</span> <span class="o">is</span> <span class="nx">@value</span>
+
+
+
+<span class="c1">#  The Nothing case for the Maybe monad.</span>
 <span class="nv">Nothing = </span><span class="nx">derive</span> <span class="nx">Maybe</span><span class="p">,</span> <span class="nx">do</span>
   <span class="nv">isNothing : </span><span class="kc">true</span>
   <span class="k">of</span>        <span class="o">:</span> <span class="nf">-&gt;</span> <span class="nx">Nothing</span>
