@@ -1,6 +1,6 @@
 # # Monad: Maybe[a]
 
-# Provides an implementation of the `Maybe[a]` monad.  
+# Commonly represents a value that may, or may not be available.
 # (In some languages, the `Maybe` monad is called `Option` or `Optional`).
 
 /** ^
