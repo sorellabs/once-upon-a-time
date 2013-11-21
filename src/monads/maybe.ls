@@ -171,7 +171,7 @@ module.exports = Maybe = derive abstract-maybe, do
 
 
 
-# The Nothing case for the Maybe monad.
+# } The Nothing case for the Maybe monad.
 Nothing = derive Maybe, do
   isNothing : true
   of        : -> Nothing
