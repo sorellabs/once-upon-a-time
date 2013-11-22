@@ -165,9 +165,9 @@ module.exports = Maybe = derive abstract-maybe, do
    *
    * @type @Maybe(a) => Maybe(a) -> Boolean
    */
-   is-equal: (a) -> Boolean
-     | @is-nothing           => a.is-nothing
-     | @is-just && a.is-just => a.value is @value
+  is-equal: (a) ->
+    | @is-nothing           => a.is-nothing
+    | @is-just && a.is-just => a.value is @value
 
 
 

@@ -149,9 +149,9 @@ module.exports = Either = derive abstract-either, do
    *
    * @type @Either(a) => Either(a) -> Boolean
    */
-   is-equal: (a) -> @is-left  is a.is-left   and \
-                    @is-right is a.is-right  and \
-                    @value    is a.value
+  is-equal: (a) -> @is-left  is a.is-left   and \
+                   @is-right is a.is-right  and \
+                   @value    is a.value
 
 
 
