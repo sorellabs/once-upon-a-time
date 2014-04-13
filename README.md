@@ -3,9 +3,12 @@
 Once upon a time...
 ===================
 
-[![Build Status](https://secure.travis-ci.org/killdream/once-upon-a-time.png?branch=master)](https://travis-ci.org/killdream/once-upon-a-time)
+> **NOTE**: This project has been broken in many modular pieces over at https://github.com/folktale
+
+
+[![Build Status](https://secure.travis-ci.org/robotlolita/once-upon-a-time.png?branch=master)](https://travis-ci.org/killdream/once-upon-a-time)
 [![NPM version](https://badge.fury.io/js/once-upon-a-time.png)](http://badge.fury.io/js/once-upon-a-time)
-[![Dependencies Status](https://david-dm.org/killdream/once-upon-a-time.png)](https://david-dm.org/killdream/once-upon-a-time)
+[![Dependencies Status](https://david-dm.org/robotlolita/once-upon-a-time.png)](https://david-dm.org/robotlolita/once-upon-a-time)
 [![experimental](http://hughsk.github.io/stability-badges/dist/experimental.svg)](http://github.com/hughsk/stability-badges)
 
 An algebraic prelude for LiveScript (and JavaScript). Compatible with fantasy-land.
@@ -52,7 +55,7 @@ you would any other library. `onceUponATime` will be a global that you can use:
 If you want to compile the library from the source, You'll need [Git][],
 [Make][] and [Node.js][], and run the following commands:
     
-    $ git clone git://github.com/killdream/once-upon-a-time.git
+    $ git clone git://github.com/robotlolita/once-upon-a-time.git
     $ cd once-upon-a-time
     $ npm install
     $ make bundle
@@ -60,7 +63,7 @@ If you want to compile the library from the source, You'll need [Git][],
 This will generate the `dist/once-upon-a-time.umd.js` file, which you can
 include anywhere.
 
-[download]: http://github.com/killdream/once-upon-a-time
+[download]: http://github.com/robotlolita/once-upon-a-time
 [Browserify]: http://browserify.org/
 [Git]: http://git-scm.com/
 [Make]: http://www.gnu.org/software/make/
@@ -95,5 +98,5 @@ platforms by the use of shims. Just include [es5-shim][] :)
 
 Copyright (c) 2013 Quildreen Motta.
 
-Released under the [MIT licence](https://github.com/killdream/once-upon-a-time/blob/master/LICENCE).
+Released under the [MIT licence](https://github.com/robotlolita/once-upon-a-time/blob/master/LICENCE).
 
